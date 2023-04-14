@@ -76,20 +76,34 @@ For this process, I chose excel to take a first look on each file to check if co
 3. There are ninety-nine (99) observations (rows) having negative ride_length values to be filtered out
 4. There are over one million observations (rows) having "NA" values to be filtered out
 
-``` {r }
+```r
+# Load necessary library to project
+
 library(rstudioapi)
 library(tidyverse)
 library(lubridate)
 library(ggplot2)
 
+
+# Define working directory 
 script_dir = rstudioapi::getActiveDocumentContext()$path
 setwd(dirname(script_dir))
 getwd()
 setwd("./Divvy_Data")
 
+# Combine all csv files in the folder
 all_trips <-
   list.files(pattern = "*.csv") %>% 
   map_df(~read_csv(.))
+
+# Add and format more variables (columns)
+all_trips$date <- as.Date(all_trips$started_at)
+all_trips$day <- format(as.Date(all_trips$date), "%d")
+all_trips$month <- format(as.Date(all_trips$date), "%m")
+all_trips$year <- format(as.Date(all_trips$date), "%Y")
+all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+all_trips$ride_length <- difftime(all_trips$ended_at, all_trips$started_at)
+all_trips$ride_length <- as.numeric(as.character(all_trips$ride_length))
 ```
 #### Phase4: Analyse
 
