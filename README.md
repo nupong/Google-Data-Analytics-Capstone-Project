@@ -116,7 +116,7 @@ all_trips_v2 <- all_trips_v2 %>%  drop_na()
 #### Phase4: Analyse
 
 Perform Descriptive Analysis to see general statistics
-```
+```r
 # Descriptive Analysis
 
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, 
