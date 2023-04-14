@@ -54,20 +54,43 @@ The dataset has been orginised on monthly basis (previous year they were organis
 
 The dataset has been identified based on **ROCCC**
 
-**R** Reliable - Yes, this dataset is widely used for Capstone project for Google course under [license](https://ride.divvybikes.com/data-license-agreement)
+**R**eliable - Yes, these dataset is widely used for Capstone project for Google course under [license](https://ride.divvybikes.com/data-license-agreement)
 
-**O** Original - Yes, this historical dataset has been downloaded from [here](https://divvy-tripdata.s3.amazonaws.com/index.html)
+**O**riginal - Yes, these historical dataset has been downloaded from [here](https://divvy-tripdata.s3.amazonaws.com/index.html)
 
-**C** Comprehensive - Yes, as per a case study, the data collected for previous 12 months from the time this case study begins (April 2022 to March 2023)
+**C*Comprehensive - Yes, as per a case study, the data collected for previous 12 months from the time this case study begins (April 2022 to March 2023)
 
-**C** Current - Yes, the data is up-to last month as per a case study begins
+**C**urrent - Yes, the data is up-to last month as per a case study begins
 
-**C** Cited - Yes, this dataset has been made available by Motivate International Inc. under this [license](https://ride.divvybikes.com/data-license-agreement)
+**C**ited - Yes, this dataset has been made available by Motivate International Inc. under this [license](https://ride.divvybikes.com/data-license-agreement)
 
-
+The dataset consists of 12 CSV files (each for a month) with 13 identical columns and more than 5 million rows.
 
 #### Phase3: Process
 
+For this process, I chose excel to take a first look on each file to check if columns and names were identical then used RStudio (R Programming) to combine and clean the data
+
+##### Findings and Cleaning
+1. All twelve (12) files have identical variables (columns)
+2. Six(6) variables (columns) have been added
+3. There are ninety-nine (99) observations (rows) having negative ride_length values to be filtered out
+4. There are over one million observations (rows) having "NA" values to be filtered out
+
+``` {r }
+library(rstudioapi)
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+
+script_dir = rstudioapi::getActiveDocumentContext()$path
+setwd(dirname(script_dir))
+getwd()
+setwd("./Divvy_Data")
+
+all_trips <-
+  list.files(pattern = "*.csv") %>% 
+  map_df(~read_csv(.))
+```
 #### Phase4: Analyse
 
 #### Phase5: Share
