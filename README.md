@@ -58,7 +58,7 @@ The dataset has been identified based on **ROCCC**
 
 **O**riginal - Yes, these historical dataset has been downloaded from [here](https://divvy-tripdata.s3.amazonaws.com/index.html)
 
-**C*Comprehensive - Yes, as per a case study, the data collected for previous 12 months from the time this case study begins (April 2022 to March 2023)
+**C**Comprehensive - Yes, as per a case study, the data collected for previous 12 months from the time this case study begins (April 2022 to March 2023)
 
 **C**urrent - Yes, the data is up-to last month as per a case study begins
 
@@ -127,8 +127,21 @@ all_trips_v2$day_of_week <-ordered(all_trips_v2$day_of_week, levels = c("Sunday"
                                                                         "Tuesday", "Wednesday",
                                                                         "Thursday", "Friday",
                                                                         "Saturday"))
+# Pivot table to see member/casual average ride length (duration) in each day of the week
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual + all_trips_v2$day_of_week, FUN = mean)
+                                                                     
 ```
 
+```r
+
+all_trips_v2 %>% 
+  mutate(weekday = wday(started_at, label = TRUE)) %>% 
+  group_by(member_casual, month, weekday) %>% 
+  summarise(number_of_rides = n(), average_duration = mean(ride_length)) %>% 
+  arrange(member_casual, weekday) %>% 
+  ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +
+  geom_col(position = "dodge")
+```
 #### Phase5: Share
 
 #### Phase6: Act
