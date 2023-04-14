@@ -104,8 +104,30 @@ all_trips$year <- format(as.Date(all_trips$date), "%Y")
 all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
 all_trips$ride_length <- difftime(all_trips$ended_at, all_trips$started_at)
 all_trips$ride_length <- as.numeric(as.character(all_trips$ride_length))
+
+# Cleaning up Head Quarter Station and negative ride_length then drop all NA observation (rows)
+all_trips_v2 <- all_trips[!(all_trips$start_station_name == "HQ QR" | all_trips$ride_length < 0),]
+all_trips_v2 <- all_trips_v2 %>%  drop_na()
+# Cleaning up Head Quarter Station and negative ride_length then drop all NA observation (rows)
+all_trips_v2 <- all_trips[!(all_trips$start_station_name == "HQ QR" | all_trips$ride_length < 0),]
+all_trips_v2 <- all_trips_v2 %>%  drop_na()
+
 ```
 #### Phase4: Analyse
+
+Perform Descriptive Analysis to see general statistics
+```
+# Descriptive Analysis
+
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, 
+          FUN = function(x) c(mean = mean(x), median = median(x),
+                              max = max(x), min = min(x)))
+# Re-order day of week
+all_trips_v2$day_of_week <-ordered(all_trips_v2$day_of_week, levels = c("Sunday","Monday",
+                                                                        "Tuesday", "Wednesday",
+                                                                        "Thursday", "Friday",
+                                                                        "Saturday"))
+```
 
 #### Phase5: Share
 
