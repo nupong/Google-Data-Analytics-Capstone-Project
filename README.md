@@ -9,7 +9,7 @@ This case study is the Capstone Project of Google Data Analytics Professional Ce
 
 ### Dataset
 Cyclistic's historical trip data has been used for analyse and identify trends. Noted that the datasets have a different name becuase Cyclistic is a fictional company.
-The data has been moade available by Motivate International Inc. under this [license](https://ride.divvybikes.com/data-license-agreement)
+The data has been made available by Motivate International Inc. under this [license](https://ride.divvybikes.com/data-license-agreement)
 
 ### Background
 Cyclistic launched a successful bike-share offering. Since then, the program has grown to a fleet about 6,000 bicycles that are geotracked and locked into a network of 600+ stations across Chicago. The bikes can be unlocked from one station and returned to any other station in the system anytime.
@@ -28,16 +28,48 @@ Three questions will guide the future marketing program:
 
 Moreno has assigned you the first question to answer: **How do annual members and casual riders use Cyclistic bikes differently?**
 
-**Business Task**
-Primary stakeholders: The director of marketing and Cyclistic executive team
-Secondary stakeholders: Cyclistic marketing analytics team
+#### Business Task
 
-Stakeholder would like to convert casual riders into annual mmembers as conclusion that annual members are much more profitable than casual riders.
+Stakeholders would like to convert casual riders into annual mmembers as conclusion that annual members are much more profitable than casual riders.
 
-Problem: Maximizing annual memberships
-Insights: Understanding how annual members and casual ridres use the bikes differenyly, identifying factors that motivate casual ridersto become members
-Business Decisions: Developing targeted marketing strategies to encoruage casual riders to become members, offering incentives or diccounts to encourage casual riders to upgrade to annual memberships, adjusting pricing plans to make annual memberships more attractive.
+**Primary stakeholders:** The director of marketing and Cyclistic executive team
+
+
+**Secondary stakeholders:** Cyclistic marketing analytics team
+
+**Problem:** Maximizing annual memberships.
+
+**Insights:** Understanding how annual members and casual ridres use the bikes differenyly, identifying factors that motivate casual ridersto become members.
+
+**Business Decisions:** Developing targeted marketing strategies to encoruage casual riders to become members, offering incentives or diccounts to encourage casual riders to upgrade to annual memberships, adjusting pricing plans to make annual memberships more attractive.
 
 The analysis would entail identifying the differences and similarities in usage patterns, such as the durations of rides, the frequency of rides, the distance traveled and the time of day when the bikes are used.
 
 
+#### Phase2: Prepare
+
+Cyclistic's historical trip data to analyse and identify trends have been collected from April 2022 to March 2023 from [here](https://divvy-tripdata.s3.amazonaws.com/index.html)
+
+The dataset has been orginised on monthly basis (previous year they were organised on quarterly basis)
+
+The dataset has been identified based on **ROCCC**
+
+**R** Reliable - Yes, this dataset is widely used for Capstone project for Google course under [license](https://ride.divvybikes.com/data-license-agreement)
+
+**O** Original - Yes, this historical dataset has been downloaded from [here](https://divvy-tripdata.s3.amazonaws.com/index.html)
+
+**C** Comprehensive - Yes, as per a case study, the data collected for previous 12 months from the time this case study begins (April 2022 to March 2023)
+
+**C** Current - Yes, the data is up-to last month as per a case study begins
+
+**C** Cited - Yes, this dataset has been made available by Motivate International Inc. under this [license](https://ride.divvybikes.com/data-license-agreement)
+
+
+
+#### Phase3: Process
+
+#### Phase4: Analyse
+
+#### Phase5: Share
+
+#### Phase6: Act
