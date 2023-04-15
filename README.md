@@ -174,4 +174,4 @@ all_trips_v2 %>%
 ```
 #### Phase6: Act
 
-All insights, key takeaway and recommendation can be found [here](https://github.com/nupong/Google-Data-Analytics-Capstone-Project-Sharing-Bike/blob/main/Capstone%20project%20-%20Cyclistic%20Bike%20Share%20Presentation.ppsx)
+All insights, key takeaways and recommendations can be found [here](https://github.com/nupong/Google-Data-Analytics-Capstone-Project-Sharing-Bike/blob/main/Capstone%20project%20-%20Cyclistic%20Bike%20Share%20Presentation.ppsx)
