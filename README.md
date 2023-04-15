@@ -8,7 +8,7 @@ This case study is the Capstone Project of Google Data Analytics Professional Ce
 6. **A**ct
 
 ### Dataset
-Cyclistic's historical trip data has been used for analyse and identify trends. Noted that the datasets have a different name becuase Cyclistic is a fictional company.
+Cyclistic's historical trip data has been used for analyse and identify trends. Noted that the datasets have a different name because Cyclistic is a fictional company.
 The data has been made available by Motivate International Inc. under this [license](https://ride.divvybikes.com/data-license-agreement)
 
 ### Background
