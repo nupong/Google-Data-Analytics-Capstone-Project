@@ -151,6 +151,8 @@ counts <- aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual +
 write.csv(counts, file = 'avg_ride_length.csv')
 ```
 #### Phase5: Share
+
+Some R codes can be found below. More codes can be found separately in [here](https://github.com/nupong/Google-Data-Analytics-Capstone-Project-Sharing-Bike/blob/main/Cyclistic_Analysis.R)
 ```r
 # Visualise the number of rides by rider type
 all_trips_v2 %>% 
@@ -171,3 +173,5 @@ all_trips_v2 %>%
   geom_col(position = "stack") + facet_wrap(~ month)
 ```
 #### Phase6: Act
+
+All insights, key takeaway and recommendation can be found [here](https://github.com/nupong/Google-Data-Analytics-Capstone-Project-Sharing-Bike/blob/main/Capstone%20project%20-%20Cyclistic%20Bike%20Share%20Presentation.ppsx)
