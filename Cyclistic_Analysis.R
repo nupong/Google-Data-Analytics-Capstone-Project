@@ -121,6 +121,19 @@ all_trips_v2 %>%
   ggplot(aes(x = weekday, y = avg_duration_min, fill = member_casual)) +
   geom_col(position = "dodge") + facet_wrap(~ month ~year) 
 
+
+
+  all_trips_v2 %>% 
+    group_by(member_casual,rideable_type) %>% 
+    summarise(number_of_rides = n()) %>% 
+    ggplot(aes(x = member_casual, y = number_of_rides, fill = member_casual)) +
+    geom_col(position = "dodge") + facet_wrap(~rideable_type, nrow =1) +
+    geom_text(aes(label = scales::comma(number_of_rides)), vjust=1.6,                    # Scales::Comma() to set comma format for large number
+              position = position_dodge(0.9), size=3.5) +
+  labs(title="Number of rides for each rideable bikes group by member/casual", 
+       subtitle="Historical trip data during Apr 2022 to Mar 2023", 
+       caption = "Data collected by Motivate International Inc")
+  
 all_trips_v2 %>% 
   mutate(weekday = wday(started_at, label = TRUE)) %>% 
   group_by(member_casual, hour, month) %>% 
@@ -132,10 +145,25 @@ all_trips_v2 %>%
   ggplot(aes(x = hour, y = number_of_rides, fill = member_casual)) +
   geom_col(position = "dodge") + facet_wrap(~month) +
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
-  labs(title="Number of rides for each rider types in hour", 
+  labs(title="Number of rides for each rider types in hour each month", 
        subtitle="Historical trip data during Apr 2022 to Mar 2023", 
        caption = "Data collected by Motivate International Inc")
 
+  all_trips_v2 %>% 
+    mutate(weekday = wday(started_at, label = TRUE)) %>% 
+    group_by(member_casual, hour, month) %>% 
+    summarise(number_of_rides = n(), 
+              average_duration = mean(ride_length), 
+              total_duration = sum(ride_length)) %>% 
+    mutate(avg_duration_min = minute(seconds_to_period(average_duration)),
+           total_duration_hrs = hour(seconds_to_period(total_duration))) %>% 
+    ggplot(aes(x = hour, y = avg_duration_min, fill = member_casual)) +
+    geom_col(position = "dodge") + facet_wrap(~month) +
+    scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
+    labs(title="Average duration (minutes) for each rider types in hour per month", 
+         subtitle="Historical trip data during Apr 2022 to Mar 2023", 
+         caption = "Data collected by Motivate International Inc")
+  
 all_trips_v2 %>% 
   mutate(weekday = wday(started_at, label = TRUE)) %>% 
   group_by(member_casual, hour, month, weekday) %>% 
@@ -145,7 +173,7 @@ all_trips_v2 %>%
   mutate(avg_duration_min = minute(seconds_to_period(average_duration)),
          total_duration_hrs = hour(seconds_to_period(total_duration))) %>% 
   ggplot(aes(x = weekday, y = avg_duration_min, fill = member_casual)) +
-  geom_boxplot(outlier.shape = 1) +
+  geom_boxplot(outlier.shape = 1) + facet_wrap(~month) +
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
   labs(title="Average duration (minutes) for each rider types in weekday", 
        subtitle="Historical trip data during Apr 2022 to Mar 2023", 
@@ -162,9 +190,11 @@ all_trips_v2 %>%
   ggplot(aes(x = month, y = avg_duration_min, fill = member_casual)) +
   geom_boxplot(outlier.shape = 1) +
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
-  labs(title="Average duration (minutes) for each rider types in monhth", 
+  labs(title="Average duration (minutes) for each rider types in month", 
        subtitle="Historical trip data during Apr 2022 to Mar 2023", 
        caption = "Data collected by Motivate International Inc")
+
+
 
 all_trips_v2 %>% 
   mutate(weekday = wday(started_at, label = TRUE)) %>% 
@@ -177,24 +207,45 @@ all_trips_v2 %>%
   ggplot(aes(x = month, y = number_of_rides, fill = member_casual)) +
   geom_boxplot(outlier.shape = 1) +
   scale_x_discrete(guide = guide_axis(check.overlap = TRUE)) +
-  labs(title="Number of rides for each rider types in monhth", 
+  labs(title="Number of rides for each rider types in month", 
        subtitle="Historical trip data during Apr 2022 to Mar 2023", 
        caption = "Data collected by Motivate International Inc")
+
 all_trips_v2 %>% 
   mutate(weekday = wday(started_at, label = TRUE)) %>% 
   group_by(member_casual, start_station_name) %>% 
   summarise(number_of_rides = n(), 
             average_duration = mean(ride_length), 
             total_duration = sum(ride_length)) %>%
-  arrange(desc(number_of_rides)) %>%  slice (1:10) %>% 
+  filter(member_casual != "member") %>% 
+  arrange(desc(number_of_rides)) %>%  slice (1:30) %>% 
   mutate(avg_duration_min = minute(seconds_to_period(average_duration)),
          total_duration_hrs = hour(seconds_to_period(total_duration))) %>% 
-  ggplot(aes(x= number_of_rides, y = start_station_name, fill=member_casual)) +
+  ggplot(aes(x= number_of_rides, y = reorder(start_station_name, number_of_rides), fill=member_casual)) +
   geom_bar(stat = "identity") +facet_wrap(~member_casual) +
-  labs(title="Top10 Stations (number of rides) for each rider types to start riding", 
+  geom_text(aes(label = scales::comma(number_of_rides)),                    # Scales::Comma() to set comma format for large number
+            position = position_dodge(0.9), size=3.5) +
+  labs(title="Top30 Stations (number of rides) for Casuals to start riding", 
        subtitle="Historical trip data during Apr 2022 to Mar 2023", 
-       caption = "Data collected by Motivate International Inc")
+       caption = "Data collected by Motivate International Inc",
+       y = "Station Name")
 
+  all_trips_v2 %>% 
+    mutate(weekday = wday(started_at, label = TRUE)) %>% 
+    group_by(member_casual, start_station_name) %>% 
+    summarise(number_of_rides = n(), 
+              average_duration = mean(ride_length), 
+              total_duration = sum(ride_length)) %>%
+  arrange(desc(number_of_rides)) %>%  slice (1:15) %>% 
+    mutate(avg_duration_min = minute(seconds_to_period(average_duration)),
+           total_duration_hrs = hour(seconds_to_period(total_duration))) %>% 
+    ggplot(aes(x= number_of_rides, y = reorder(start_station_name, number_of_rides), fill=member_casual)) +
+    geom_bar(stat = "identity") +facet_wrap(~member_casual) +
+    labs(title="Top15 Stations (number of rides) for each rider types to start riding", 
+         subtitle="Historical trip data during Apr 2022 to Mar 2023", 
+         caption = "Data collected by Motivate International Inc",
+         y = "Start Station Name")
+  
 all_trips_v2 %>% 
   mutate(weekday = wday(started_at, label = TRUE)) %>% 
   group_by(member_casual, month, year, weekday) %>% 
