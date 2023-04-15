@@ -1,0 +1,83 @@
+---
+title: "Google Data Analytics Capstone - Cyclistic"
+author: "Anupong Wongthotsarat"
+date: "2023-04-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(rstudioapi)
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+```
+
+```{r all_trips dataset combination, include=FALSE}
+# Define working directory 
+script_dir = rstudioapi::getActiveDocumentContext()$path
+setwd(dirname(script_dir))
+getwd()
+setwd("./Divvy_Data")
+
+# Combine all csv files in the folder
+all_trips <-
+  list.files(pattern = "*.csv") %>% 
+  map_df(~read_csv(.))
+```
+
+```{r}
+# Add and format more variables (columns)
+all_trips$date <- as.Date(all_trips$started_at)
+all_trips$day <- format(as.Date(all_trips$date), "%d")
+all_trips$month <- format(as.Date(all_trips$date), "%m")
+all_trips$year <- format(as.Date(all_trips$date), "%Y")
+all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+all_trips$ride_length <- difftime(all_trips$ended_at, all_trips$started_at)
+all_trips$ride_length <- as.numeric(as.character(all_trips$ride_length))
+```
+
+```{r}
+# Cleaning up Head Quarter Station and negative ride_length then drop all NA observation (rows)
+all_trips_v2 <- all_trips[!(all_trips$start_station_name == "HQ QR" | all_trips$ride_length < 0),]
+all_trips_v2 <- all_trips_v2 %>%  drop_na()
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
+# Descriptive Analysis
+
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual, 
+          FUN = function(x) c(mean = mean(x), median = median(x),
+                              max = max(x), min = min(x)))
+# Re-order day of week
+all_trips_v2$day_of_week <-ordered(all_trips_v2$day_of_week, levels = c("Sunday","Monday",
+                                                                        "Tuesday", "Wednesday",
+                                                                        "Thursday", "Friday",
+                                                                        "Saturday"))
+# Pivot table to see member/casual average ride length (duration) in each day of the week
+aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual + all_trips_v2$day_of_week, FUN = mean)
+```
+
+
+```{r all_trips_v2, echo= FALSE, message=FALSE, warning=FALSE}
+all_trips_v2 %>% 
+  mutate(weekday = wday(started_at, label = TRUE)) %>% 
+  group_by(member_casual, month, weekday) %>% 
+  summarise(number_of_rides = n(), average_duration = mean(ride_length)) %>% 
+  arrange(member_casual, weekday) %>% 
+  ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +
+  geom_col(position = "dodge")
+
+all_trips_v2 %>% 
+  mutate(weekday = wday(started_at, label = TRUE)) %>% 
+  group_by(member_casual, rideable_type, month, weekday, start_station_name) %>% 
+  summarise(number_of_rides = n(), average_duration = mean(ride_length)) %>% 
+  arrange(member_casual, weekday) %>% 
+  ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +
+  geom_col(position = "stack") + facet_wrap(~ month)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
